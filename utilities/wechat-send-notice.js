@@ -7,8 +7,6 @@ const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
     WechatID = process.env.WECHAT_APPID,
     WechatKey = process.env.WECHAT_SECRET;
 
-const ADMIN_TEMPLATE = '## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：`${NICK}`说\n\n${COMMENT}\n\n点击[【原文链接】](${POST_URL})查看完整內容';
-
 exports.notice = (comment) => {
     let SITE_NAME = process.env.SITE_NAME;
     let TIME = comment.get('updatedAt');
@@ -16,8 +14,7 @@ exports.notice = (comment) => {
     let COMMENT = comment.get('comment');
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 
-    let _template = process.env.WXWORK_TEMPLATE || ADMIN_TEMPLATE;
-    let markdownContent = eval('`' + _template + '`');
+    let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}说\n\n${COMMENT}\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
 
     var options = {
         'method': 'POST',
