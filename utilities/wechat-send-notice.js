@@ -2,6 +2,7 @@
 const request = require('request');
 const crypto = require('crypto');
 const dayjs = require('dayjs');
+const html2md = require('html-to-markdown');
 
 const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
     WechatURL = process.env.WECHAT_URL,
@@ -12,7 +13,7 @@ exports.notice = (comment) => {
     let SITE_NAME = process.env.SITE_NAME;
     let TIME = dayjs(comment.get('updatedAt')).format('YY-M-D HH:mm:ss');
     let NICK = comment.get('nick');
-    let COMMENT = comment.get('comment');
+    let COMMENT = html2md.convert(comment.get('comment'));
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 
     let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}说\n\n${COMMENT}\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
