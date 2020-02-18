@@ -2,7 +2,7 @@
 const request = require('request');
 const crypto = require('crypto');
 const dayjs = require('dayjs');
-const html2md = require('html-to-markdown');
+const html2md = require('markdownparser');
 
 const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
     WechatURL = process.env.WECHAT_URL,
@@ -13,7 +13,7 @@ exports.notice = (comment) => {
     let SITE_NAME = process.env.SITE_NAME;
     let TIME = dayjs(comment.get('updatedAt')).format('YY-M-D HH:mm:ss');
     let NICK = comment.get('nick');
-    let COMMENT = html2md.convert(comment.get('comment'));
+    let COMMENT = html2md.parse(comment.get('comment'));
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 
     let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}说\n\n${COMMENT}\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
@@ -49,15 +49,15 @@ exports.send = (currentComment, parentComment) => {
 
     let PARENT_NICK = parentComment.get('nick');
     let PARENT_COMMENT = parentComment.get('comment');
-    let PARENT_DATE = dayjs(parentComment.get('updatedAt')).format('YY-M-D HH:mm:ss');
+    let PARENT_DATE = dayjs(parentComment.get('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
 
     let NICK = currentComment.get('nick');
     let COMMENT = currentComment.get('comment');
-    let DATE = dayjs(currentComment.get('updatedAt')).format('YY-M-D HH:mm:ss');
+    let DATE = dayjs(currentComment.get('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
 
     let POST_URL = process.env.SITE_URL + currentComment.get('url') + '#' + currentComment.get('objectId');
 
-    var options = {
+    let options = {
         'method': 'POST',
         'url': WechatURL,
         'headers': getAPIHeader(),
@@ -72,6 +72,9 @@ exports.send = (currentComment, parentComment) => {
             "url": POST_URL
         }])
     };
+
+    console.log('ready to post',options);
+
     request(options, function (error, response) {
         if (error) {
             return console.log(error);

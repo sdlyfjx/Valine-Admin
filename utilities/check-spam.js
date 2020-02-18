@@ -9,8 +9,7 @@ const akismetClient = akismet.client({
 
 exports.checkSpam = (comment, ip)=> {
     if (process.env.BAIDU_APPID != undefined){
-        BD.checkSpam(comment, ip);
-        return;
+        return BD.checkSpam(comment, ip);
     }
     if (process.env.AKISMET_KEY === 'MANUAL_REVIEW') {
         console.log('已使用人工审核模式，评论审核后才会发表~');
