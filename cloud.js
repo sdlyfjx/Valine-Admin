@@ -1,14 +1,12 @@
 const AV = require('leanengine');
-const mail = require('./utilities/send-mail');
+const mail = require('./utilities/wechat-send-notice');
 const Comment = AV.Object.extend('Comment');
 const request = require('request');
 const spam = require('./utilities/check-spam');
 
 function sendNotification(currentComment, defaultIp) {
-    // 发送博主通知邮件
-    if (currentComment.get('mail') !== process.env.BLOGGER_EMAIL) {
-        mail.notice(currentComment);
-    }
+    // 发送博主通知
+    mail.notice(currentComment);
 
     let ip = currentComment.get('ip') || defaultIp;
     console.log('IP: %s', ip);
@@ -21,18 +19,17 @@ function sendNotification(currentComment, defaultIp) {
         console.log("这条评论没有 @ 任何人");
         return;
     } else if (currentComment.get('isSpam')) {
-        console.log('评论未通过审核，通知邮件暂不发送');
+        console.log('评论未通过审核，通知暂不发送');
         return;
     }
 
     let query = new AV.Query('Comment');
     query.get(rid).then(function (parentComment) {
-        if (parentComment.get('mail') && parentComment.get('mail') !== process.env.BLOGGER_EMAIL) {
+        if (parentComment.get('mail') && parentComment.get('mail').length() > 27) {
             mail.send(currentComment, parentComment);
         } else {
             console.log('被@者匿名，不会发送通知');
         }
-        
     }, function (error) {
         console.warn('获取@对象失败！');
     });
@@ -58,7 +55,7 @@ AV.Cloud.define('resend_mails', function(req) {
             }
             resolve(count);
         }).then((count)=>{
-            console.log(`昨日${count}条未成功发送的通知邮件处理完毕！`);
+            console.log(`昨日${count}条未成功发送的通知处理完毕！`);
         }).catch(()=>{
 
         });

@@ -1,7 +1,7 @@
 'use strict';
 const router = require('express').Router();
 const AV = require('leanengine');
-const mail = require('../utilities/send-mail');
+const mail = require('../utilities/wechat-send-notice');
 const spam = require('../utilities/check-spam');
 
 const Comment = AV.Object.extend('Comment');

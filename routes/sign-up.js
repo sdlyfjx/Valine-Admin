@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
     if (req.currentUser) {
         res.redirect('/comments');
     } else {
-        let adminMail = process.env.BLOGGER_EMAIL || process.env.SMTP_USER;
+        let adminMail = process.env.BLOGGER_EMAIL;
         let q = new AV.Query(User);
         q.equalTo('email', adminMail);
         q.find().then(function (results) {
@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    let adminMail = process.env.BLOGGER_EMAIL || process.env.SMTP_USER;
+    let adminMail = process.env.BLOGGER_EMAIL;
     let q = new AV.Query(User);
     q.equalTo('email', adminMail);
     q.find().then(function (results) {
