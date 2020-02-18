@@ -12,9 +12,9 @@ function sendNotification(currentComment, defaultIp) {
     console.log('IP: %s', ip);
     spam.checkSpam(currentComment, ip);
 
+    console.log('After Spam Check')
     // AT评论通知
     let rid =currentComment.get('pid') || currentComment.get('rid');
-
     if (!rid) {
         console.log("这条评论没有 @ 任何人");
         return;

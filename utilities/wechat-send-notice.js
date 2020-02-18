@@ -9,7 +9,7 @@ const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
 
 exports.notice = (comment) => {
     let SITE_NAME = process.env.SITE_NAME;
-    let TIME = comment.get('updatedAt');
+    let TIME = comment.toGMTString('updatedAt');
     let NICK = comment.get('nick');
     let COMMENT = comment.get('comment');
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
@@ -47,11 +47,11 @@ exports.send = (currentComment, parentComment) => {
 
     let PARENT_NICK = parentComment.get('nick');
     let PARENT_COMMENT = parentComment.get('comment');
-    let PARENT_DATE = parentComment.get('updatedAt');
+    let PARENT_DATE = parentComment.toGMTString('updatedAt');
 
     let NICK = currentComment.get('nick');
     let COMMENT = currentComment.get('comment');
-    let DATE = currentComment.get('updatedAt');
+    let DATE = currentComment.toGMTString('updatedAt');
 
     let POST_URL = process.env.SITE_URL + currentComment.get('url') + '#' + currentComment.get('objectId');
 

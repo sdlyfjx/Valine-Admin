@@ -8,8 +8,9 @@ const akismetClient = akismet.client({
 });
 
 exports.checkSpam = (comment, ip)=> {
-    if (process.env.Baidu_APPID != undefined){
-        return BD.checkSpam(comment, ip);
+    console.log('START CHECK SPAM')
+    if (process.env.BAIDU_APPID != undefined){
+        BD.checkSpam(comment, ip);
     }
     if (process.env.AKISMET_KEY === 'MANUAL_REVIEW') {
         console.log('已使用人工审核模式，评论审核后才会发表~');
@@ -54,7 +55,7 @@ exports.checkSpam = (comment, ip)=> {
     });
 };
 exports.submitSpam = (comment)=> {
-    if (process.env.Baidu_APPID != undefined){
+    if (process.env.BAIDU_APPID != undefined){
         return BD.submitSpam(comment);
     }
     if (process.env.AKISMET_KEY === 'MANUAL_REVIEW') {
@@ -85,7 +86,7 @@ exports.submitSpam = (comment)=> {
     });
 };
 exports.submitHam = (comment)=> {    
-    if (process.env.Baidu_APPID != undefined){
+    if (process.env.BAIDU_APPID != undefined){
         return BD.submitHam(comment);
     }
     if (process.env.AKISMET_KEY === 'MANUAL_REVIEW') {
