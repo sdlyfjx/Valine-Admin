@@ -1,6 +1,7 @@
 'use strict';
 const request = require('request');
 const crypto = require('crypto');
+const dayjs = require('dayjs');
 
 const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
     WechatURL = process.env.WECHAT_URL,
@@ -9,7 +10,7 @@ const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
 
 exports.notice = (comment) => {
     let SITE_NAME = process.env.SITE_NAME;
-    let TIME = comment.toGMTString('updatedAt');
+    let TIME = dayjs(comment.get('updatedAt')).format('YY-M-D HH:mm:ss');
     let NICK = comment.get('nick');
     let COMMENT = comment.get('comment');
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
@@ -47,11 +48,11 @@ exports.send = (currentComment, parentComment) => {
 
     let PARENT_NICK = parentComment.get('nick');
     let PARENT_COMMENT = parentComment.get('comment');
-    let PARENT_DATE = parentComment.toGMTString('updatedAt');
+    let PARENT_DATE = dayjs(parentComment.get('updatedAt')).format('YY-M-D HH:mm:ss');
 
     let NICK = currentComment.get('nick');
     let COMMENT = currentComment.get('comment');
-    let DATE = currentComment.toGMTString('updatedAt');
+    let DATE = dayjs(currentComment.get('updatedAt')).format('YY-M-D HH:mm:ss');
 
     let POST_URL = process.env.SITE_URL + currentComment.get('url') + '#' + currentComment.get('objectId');
 
