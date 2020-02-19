@@ -30,7 +30,7 @@ async function sendNotification(currentComment, defaultIp) {
     let parentComment = await query.get(rid).catch(err => {
         return console.warn('获取@对象失败！');
     });
-    if (parentComment.get('mail') && parentComment.get('mail').length() > 27) {
+    if (parentComment.get('mail') && parentComment.get('mail').length > 27) {
         await mail.send(currentComment, parentComment);
     } else {
         console.log('被@者匿名，不会发送通知');

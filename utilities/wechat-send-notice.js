@@ -87,7 +87,7 @@ exports.send = (currentComment, parentComment) => {
                 return;
             }
             console.log('AT通知发送完成: %s', response.body);
-            if (response.body.errcode == 0) {
+            if (response.body.success) {
                 console.log('发送成功');
                 currentComment.set('isNotified', true);
                 currentComment.save();
