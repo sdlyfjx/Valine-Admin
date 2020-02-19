@@ -12,10 +12,12 @@ async function sendNotification(currentComment, defaultIp) {
     let ip = currentComment.get('ip') || defaultIp;
     console.log('IP: %s', ip);
 
-    // 垃圾评论检测
-    console.log('start spam check')
-    await spam.checkSpam(currentComment, ip);
-    console.log('After Spam Check')
+    // 垃圾评论检测，只有在未检测时才会进行检测，否则不再检测
+    if(currentComment.get('isSpam') == undefined){
+        console.log('start spam check')
+        await spam.checkSpam(currentComment, ip);
+        console.log('After Spam Check')
+    }
 
     // AT评论通知
     let rid = currentComment.get('pid') || currentComment.get('rid');
@@ -26,7 +28,6 @@ async function sendNotification(currentComment, defaultIp) {
         console.log('评论未通过审核，通知暂不发送');
         return;
     }
-
     console.log('start notice')
     let query = new AV.Query('Comment');
     query.get(rid).then(function (parentComment) {
