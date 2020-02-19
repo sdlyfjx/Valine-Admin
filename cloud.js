@@ -6,17 +6,14 @@ const spam = require('./utilities/check-spam-baidu');
 
 async function sendNotification(currentComment, defaultIp) {
     // 发送博主通知
-    console.log('start admin notice')
     mail.notice(currentComment);
 
     let ip = currentComment.get('ip') || defaultIp;
     console.log('IP: %s', ip);
 
     // 垃圾评论检测，只有在未检测时才会进行检测，否则不再检测
-    if(currentComment.get('isSpam') == undefined){
-        console.log('start spam check')
+    if (currentComment.get('isSpam') == undefined) {
         await spam.checkSpam(currentComment, ip);
-        console.log('After Spam Check')
     }
 
     // AT评论通知
@@ -30,15 +27,14 @@ async function sendNotification(currentComment, defaultIp) {
     }
     console.log('start notice')
     let query = new AV.Query('Comment');
-    query.get(rid).then(function (parentComment) {
-        if (parentComment.get('mail') && parentComment.get('mail').length() > 27) {
-            mail.send(currentComment, parentComment);
-        } else {
-            console.log('被@者匿名，不会发送通知');
-        }
-    }, function (error) {
-        console.warn('获取@对象失败！');
+    let parentComment = await query.get(rid).catch(err => {
+        return console.warn('获取@对象失败！');
     });
+    if (parentComment.get('mail') && parentComment.get('mail').length() > 27) {
+        await mail.send(currentComment, parentComment);
+    } else {
+        console.log('被@者匿名，不会发送通知');
+    }
     console.log('after notice')
 }
 

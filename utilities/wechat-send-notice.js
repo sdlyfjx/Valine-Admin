@@ -78,27 +78,33 @@ exports.send = (currentComment, parentComment) => {
         }])
     };
 
+    console.log(options)
+
     return new Promise((resolve, reject) => {
         request(options, function (error, response) {
             if (error) {
                 console.log(error);
                 reject(error);
+                return;
             }
-            console.log('AT通知成功发送: %s', response.body);
-            currentComment.set('isNotified', true);
-            currentComment.save();
+            console.log('AT通知发送完成: %s', response.body);
+            if (response.body.errcode == 0) {
+                console.log('发送成功');
+                currentComment.set('isNotified', true);
+                currentComment.save();
+            }
             resolve(response.body);
         });
     });
 };
 
 function getAPIHeader() {
-    var dateTime = new Date().toGMTString();
+    let dateTime = new Date().toGMTString();
     const SecretId = WechatID;
     const SecretKey = WechatKey;
     const source = 'LeanCloud';
     const ContentType = 'application/json'
-    var signStr = `date:${dateTime}\nsource:${source}\ncontent-type:${ContentType}`;
+    var signStr = `date: ${dateTime}\nsource: ${source}\ncontent-type: ${ContentType}`;
     // console.log(signStr);
     let hmac = crypto.createHmac('sha1', SecretKey);
     let sign = hmac.update(signStr).digest('base64');
