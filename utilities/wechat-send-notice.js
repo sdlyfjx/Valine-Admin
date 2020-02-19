@@ -103,7 +103,7 @@ function getAPIHeader() {
     let hmac = crypto.createHmac('sha1', SecretKey);
     let sign = hmac.update(signStr).digest('base64');
     // console.log(sign.toString())
-    var auth = `hmac id="${SecretId}", algorithm="hmac-sha1", headers="date source content-type", signature="${sign}`;
+    var auth = `hmac id="${SecretId}", algorithm="hmac-sha1", headers="date source content-type", signature="${sign}"`;
     console.log(auth);
     return {
         'Source': source,
