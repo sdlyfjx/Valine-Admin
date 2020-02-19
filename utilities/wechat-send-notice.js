@@ -3,6 +3,7 @@ const request = require('request');
 const crypto = require('crypto');
 const dayjs = require('dayjs');
 const html2md = require('markdownparser');
+const html2txt = require('html-to-text')
 
 const WXWorkKEY = process.env.WXWORK_WEBHOOK_KEY,
     WechatURL = process.env.WECHAT_URL,
@@ -53,11 +54,11 @@ exports.send = (currentComment, parentComment) => {
     }
 
     let PARENT_NICK = parentComment.get('nick');
-    let PARENT_COMMENT = html2md.parse(parentComment.get('comment'));
+    let PARENT_COMMENT = html2txt.fromString(parentComment.get('comment'));
     let PARENT_DATE = dayjs(parentComment.get('updatedAt')).format('YYYY/MM/DD HH:mm:ss');
 
     let NICK = currentComment.get('nick');
-    let COMMENT = html2md.parse(currentComment.get('comment'));
+    let COMMENT = html2txt.fromString(currentComment.get('comment'));
     let DATE = dayjs(currentComment.get('updatedAt')).format('YYYY/MM/DD HH:mm:ss');
 
     let POST_URL = process.env.SITE_URL + currentComment.get('url') + '#' + currentComment.get('objectId');
@@ -77,8 +78,6 @@ exports.send = (currentComment, parentComment) => {
             "url": POST_URL
         }])
     };
-
-    console.log(options)
 
     return new Promise((resolve, reject) => {
         request(options, function (error, response) {
@@ -110,7 +109,7 @@ function getAPIHeader() {
     let sign = hmac.update(signStr).digest('base64');
     // console.log(sign.toString())
     var auth = `hmac id="${SecretId}", algorithm="hmac-sha1", headers="date source content-type", signature="${sign}"`;
-    console.log(auth);
+    // console.log(auth);
     return {
         'Source': source,
         'Date': dateTime,
