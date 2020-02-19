@@ -53,12 +53,12 @@ exports.send = (currentComment, parentComment) => {
     }
 
     let PARENT_NICK = parentComment.get('nick');
-    let PARENT_COMMENT = parentComment.get('comment');
-    let PARENT_DATE = dayjs(parentComment.get('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+    let PARENT_COMMENT = html2md.parse(parentComment.get('comment'));
+    let PARENT_DATE = dayjs(parentComment.get('updatedAt')).format('YYYY/MM/DD HH:mm:ss');
 
     let NICK = currentComment.get('nick');
-    let COMMENT = currentComment.get('comment');
-    let DATE = dayjs(currentComment.get('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+    let COMMENT = html2md.parse(currentComment.get('comment'));
+    let DATE = dayjs(currentComment.get('updatedAt')).format('YYYY/MM/DD HH:mm:ss');
 
     let POST_URL = process.env.SITE_URL + currentComment.get('url') + '#' + currentComment.get('objectId');
 
