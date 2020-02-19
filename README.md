@@ -24,8 +24,7 @@ SITE_NAME | Deserts | [必填]博客名称
 SITE_URL  | https://deserts.io | [必填]首页地址 
 ADMIN_URL | https://xxx.leanapp.cn/ | [建议]Web主机二级域名，用于自动唤醒或评论管理后台的访问链接
 BLOGGER_EMAIL | XXXXXXXXXXXX | [必填]管理员email，用于管理后台登录
-AKISMET_KEY | xxxxxxxxxxxx | [可选]Akismet Key 用于垃圾评论检测，设为MANUAL_REVIEW开启人工审核，留空不使用反垃圾
-BAIDU_APPID | xxxxxxxxxxxx | [可选]百度云内容审核引擎APPID（用于垃圾评论检测，设为MANUAL_REVIEW开启人工审核，优先级高于AKISMET_KEY，若配置则优先使用Baidu内容审核）
+BAIDU_APPID | xxxxxxxxxxxx | [可选]百度云内容审核引擎APPID（用于垃圾评论检测，设为MANUAL_REVIEW开启人工审核）
 BAIDU_APIKEY | xxxxxxxxxxxx | [可选]若启用百度内容审核则必填，可前往https://ai.baidu.com/censoring 配置审核策略和申请应用AK SK
 BAIDU_SECRET | xxxxxxxxxxxx | [可选]若启用百度内容审核则必填
 WXWORK_WEBHOOK_KEY | xxxxxxxxxxxx | [必填]企业微信群机器人的WebHook地址中的key
@@ -78,23 +77,6 @@ WECHAT_SECRET | xxxxxxxxxxxx | [必填]公众号推送服务的SECRET（同上�
 **至此，Valine Admin 已经可以正常工作，更多以下是可选的进阶配置。**
 -----------------
 
-## 垃圾评论检测
-
-> Akismet (Automattic Kismet)是应用广泛的一个垃圾留言过滤系统，其作者是大名鼎鼎的WordPress 创始人 Matt Mullenweg，Akismet也是WordPress默认安装的插件，其使用非常广泛，设计目标便是帮助博客网站来过滤留言Spam。有了Akismet之后，基本上不用担心垃圾留言的烦恼了。
-> 启用Akismet后，当博客再收到留言会自动将其提交到Akismet并与Akismet上的黑名单进行比对，如果名列该黑名单中，则该条留言会被标记为垃圾评论且不会发布。
-
-如果还没有Akismet Key，你可以去 [AKISMET FOR DEVELOPERS 免费申请一个](https://akismet.com/development/)；
-**当AKISMET_KEY设为MANUAL_REVIEW时，开启人工审核模式；**
-如果你不需要反垃圾评论，Akismet Key 环境变量可以忽略。
-
-**为了实现较为精准的垃圾评论识别，采集的判据除了评论内容、邮件地址和网站地址外，还包括评论者的IP地址、浏览器信息等，但仅在云引擎后台使用这些数据，确保隐私和安全。**
-
-**如果使用了本站最新的Valine和Valine Admin，并设置了Akismet Key，可以有效地拦截垃圾评论。被标为垃圾的评论可以在管理页面取消标注。**
-
-环境变量 | 示例 | 说明
---- | ------ | ------
-AKISMET_KEY | xxxxxxxxxxxx | [可选]Akismet Key 用于垃圾评论检测
-
 ## 百度AI垃圾评论检测
 
 > 使用百度内容审核平台替代Akismet的审核功能，白名单和黑名单的提交功能由于百度没有开放接口所以只能在百度后台进行配置。
@@ -112,7 +94,7 @@ AKISMET_KEY | xxxxxxxxxxxx | [可选]Akismet Key 用于垃圾评论检测
 
 环境变量 | 示例 | 说明
 --- | ------ | ------
-BAIDU_APPID | xxxxxxxxxxxx | [可选]百度云内容审核引擎APPID（用于垃圾评论检测，设为MANUAL_REVIEW开启人工审核，优先级高于AKISMET_KEY，若配置则优先使用Baidu内容审核）
+BAIDU_APPID | xxxxxxxxxxxx | [可选]百度云内容审核引擎APPID（用于垃圾评论检测，设为MANUAL_REVIEW开启人工审核）
 BAIDU_APIKEY | xxxxxxxxxxxx | [可选]若启用百度内容审核则必填，可前往https://ai.baidu.com/censoring 配置审核策略和申请应用AK SK
 BAIDU_SECRET | xxxxxxxxxxxx | [可选]若启用百度内容审核则必填
 

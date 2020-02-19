@@ -2,7 +2,7 @@
 const router = require('express').Router();
 const AV = require('leanengine');
 const mail = require('../utilities/wechat-send-notice');
-const spam = require('../utilities/check-spam');
+const spam = require('../utilities/check-spam-baidu');
 
 const Comment = AV.Object.extend('Comment');
 

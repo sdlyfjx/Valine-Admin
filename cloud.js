@@ -2,11 +2,11 @@ const AV = require('leanengine');
 const mail = require('./utilities/wechat-send-notice');
 const Comment = AV.Object.extend('Comment');
 const request = require('request');
-const spam = require('./utilities/check-spam');
+const spam = require('./utilities/check-spam-baidu');
 
-function sendNotification(currentComment, defaultIp) {
+async function sendNotification(currentComment, defaultIp) {
     // 发送博主通知
-    console.log('start bloger notice')
+    console.log('start admin notice')
     mail.notice(currentComment);
 
     let ip = currentComment.get('ip') || defaultIp;
@@ -14,7 +14,7 @@ function sendNotification(currentComment, defaultIp) {
 
     // 垃圾评论检测
     console.log('start spam check')
-    spam.checkSpam(currentComment, ip);
+    await spam.checkSpam(currentComment, ip);
     console.log('After Spam Check')
 
     // AT评论通知

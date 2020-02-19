@@ -9,7 +9,6 @@
     "dev": "nodemon server.js -- "
   },
   "dependencies": {
-    "akismet-api": "^3.0.0",
     "baidu-aip-sdk": "^2.4.5",
     "body-parser": "^1.19.0",
     "connect-timeout": "^1.7.0",
