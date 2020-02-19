@@ -17,7 +17,7 @@ exports.notice = (comment) => {
     let COMMENT = html2md.parse(comment.get('comment'));
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 
-    let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}说\n\n${COMMENT}\n\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
+    let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}\n\n${COMMENT}\n\n\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
 
     var options = {
         'method': 'POST',

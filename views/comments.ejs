@@ -8,10 +8,8 @@
 <div class="comment-main">
     <div class="header">
         <div class="title"><span><%= title %></span></div>
-
         <div class="logout-wrapper"><a href="/logout">退出登录</a></div>
     </div>
-
     <ul class="content">
         <% for(var i = 0; i < comment_list.length; i++) { %>
         <li class="vcard">
@@ -31,16 +29,15 @@
                 <span class="spacer">•</span><span class="vtime"><%= comment_list[i].get('mail') %></span>
                 <% } %>
                 <span class="spacer">•</span><span class="vtime"><%= dateFormat(date) %></span>
-
             </div>
             <div class="vcomment">
                 <%- comment_list[i].get('comment') %>
             </div>
             <div class="check">
                 <% if(comment_list[i].get('isSpam')) { %>
-                <a href="/comments/not-spam?id=<%= comment_list[i].get('objectId') %>" rel="nofollow">这不是垃圾评论</a>
+                <a class="red" href="/comments/not-spam?id=<%= comment_list[i].get('objectId') %>" rel="nofollow">取消屏蔽</a>
                 <% } else { %>
-                <a href="/comments/mark-spam?id=<%= comment_list[i].get('objectId') %>" rel="nofollow">标记为垃圾评论</a>
+                <a href="/comments/mark-spam?id=<%= comment_list[i].get('objectId') %>" rel="nofollow">屏蔽该条</a>
                 <% } %>
                 <span class="spacer">•</span>
                 <a class="red" href="/comments/delete?id=<%= comment_list[i].get('objectId') %>" rel="nofollow">删除</a>

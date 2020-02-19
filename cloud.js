@@ -25,7 +25,6 @@ async function sendNotification(currentComment, defaultIp) {
         console.log('评论未通过审核，通知暂不发送');
         return;
     }
-    console.log('start notice')
     let query = new AV.Query('Comment');
     let parentComment = await query.get(rid).catch(err => {
         return console.warn('获取@对象失败！');
@@ -35,7 +34,6 @@ async function sendNotification(currentComment, defaultIp) {
     } else {
         console.log('被@者匿名，不会发送通知');
     }
-    console.log('after notice')
 }
 
 AV.Cloud.afterSave('Comment', function (req) {
