@@ -16,7 +16,7 @@ exports.notice = (comment) => {
     let COMMENT = html2md.parse(comment.get('comment'));
     let POST_URL = process.env.SITE_URL + comment.get('url') + '#' + comment.get('objectId');
 
-    let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}说\n\n${COMMENT}\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
+    let markdownContent = `## ${SITE_NAME}收到<font color=\"info\">新评论：</font>\n> 评论时间：<font color=\"comment\">${TIME}</font>\n> 评论人：${NICK}说\n\n${COMMENT}\n\n\n点击[【原文链接】](${POST_URL})查看完整內容`;
 
     var options = {
         'method': 'POST',
@@ -31,19 +31,24 @@ exports.notice = (comment) => {
             }
         })
     };
-    request(options, function (error, response) {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('站长通知成功发送: %s', response.body);
-        comment.set('isNotified', true);
-        comment.save();
-    });
+
+    return new Promise((resolve, reject) => {
+        request(options, function (error, response) {
+            if (error) {
+                console.log(error);
+                reject(error);
+            }
+            console.log('站长通知成功发送: %s', response.body);
+            comment.set('isNotified', true);
+            comment.save();
+            resolve(response.body);
+        });
+    })
 }
 
 exports.send = (currentComment, parentComment) => {
     let PARENT_UNIONID = parentComment.get('mail');
-    if(/o[0-9a-zA-Z]{27,30}/.test(PARENT_UNIONID) == false){
+    if (/o[0-9a-zA-Z]{27,30}/.test(PARENT_UNIONID) == false) {
         return console.log('非正规UnionID')
     }
 
@@ -73,15 +78,17 @@ exports.send = (currentComment, parentComment) => {
         }])
     };
 
-    console.log('ready to post',options);
-
-    request(options, function (error, response) {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('AT通知成功发送: %s', response.body);
-        currentComment.set('isNotified', true);
-        currentComment.save();
+    return new Promise((resolve, reject) => {
+        request(options, function (error, response) {
+            if (error) {
+                console.log(error);
+                reject(error);
+            }
+            console.log('AT通知成功发送: %s', response.body);
+            currentComment.set('isNotified', true);
+            currentComment.save();
+            resolve(response.body);
+        });
     });
 };
 
@@ -93,7 +100,7 @@ function getAPIHeader() {
     const ContentType = 'application/json'
     var signStr = `date:${dateTime}\nsource:${source}\ncontent-type:${ContentType}`;
     // console.log(signStr);
-    let hmac = crypto.createHmac('sha1',SecretKey);
+    let hmac = crypto.createHmac('sha1', SecretKey);
     let sign = hmac.update(signStr).digest('base64');
     // console.log(sign.toString())
     var auth = `hmac id="${SecretId}", algorithm="hmac-sha1", headers="date source content-type", signature="${sign}`;

@@ -55,8 +55,7 @@ exports.checkSpam = (comment, ip)=> {
 };
 exports.submitSpam = (comment)=> {
     if (process.env.BAIDU_APPID != undefined){
-        BD.submitSpam(comment);
-        return;
+        return BD.submitSpam(comment);
     }
     if (process.env.AKISMET_KEY === 'MANUAL_REVIEW') {
         return;
@@ -87,8 +86,7 @@ exports.submitSpam = (comment)=> {
 };
 exports.submitHam = (comment)=> {    
     if (process.env.BAIDU_APPID != undefined){
-        BD.submitHam(comment);
-        return;
+        return BD.submitHam(comment);
     }
     if (process.env.AKISMET_KEY === 'MANUAL_REVIEW') {
         return;
